@@ -1,0 +1,111 @@
+{
+  "name": "quick-open-files",
+  "displayName": "Quick Open Files",
+  "description": "Open files quicker and easier: browse your bookmarks or any directory from a Quick Pick, even outside the workspace.",
+  "version": "0.1.0",
+  "publisher": "steven-plugins",
+  "license": "SEE LICENSE IN LICENSE",
+  "icon": "media/icon.png",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "open",
+    "files",
+    "bookmarks",
+    "quick pick",
+    "file browser"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "quickOpenFiles.browse",
+        "title": "Browse Files…",
+        "category": "Quick Open Files"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "quickOpenFiles.browse",
+        "key": "ctrl+alt+o",
+        "mac": "cmd+alt+o"
+      }
+    ],
+    "configuration": {
+      "title": "Quick Open Files",
+      "properties": {
+        "quickOpenFiles.bookmarks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "~"
+          ],
+          "scope": "application",
+          "markdownDescription": "Files or folders shown at the top of the picker. `~` expands to your home directory."
+        },
+        "quickOpenFiles.persistentBrowsing": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "Keep the picker open after opening a file."
+        },
+        "quickOpenFiles.listCurrentDir": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "List the active editor's folder below the bookmarks."
+        },
+        "quickOpenFiles.listDirsFirst": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "List folders before files."
+        },
+        "quickOpenFiles.excludePatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "scope": "window",
+          "markdownDescription": "Glob patterns to hide from directory listings. Falls back to your `files.exclude` settings when unset."
+        }
+      }
+    }
+  },
+  "capabilities": {
+    "virtualWorkspaces": false,
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "compile": "npm run check-types && node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "test": "vitest run",
+    "package": "npm run check-types && node esbuild.mjs --production",
+    "vscode:prepublish": "npm run package",
+    "test:integration": "tsc && vscode-test"
+  },
+  "dependencies": {
+    "minimatch": "^9.0.5"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.100.0",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
