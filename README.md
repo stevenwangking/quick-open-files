@@ -1,5 +1,7 @@
 # Quick Open Files
 
+[![Install in VS Code](https://img.shields.io/badge/Install-VS%20Code-blue?logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=stevenwangking.quick-open-files)
+
 Open files quicker and easier in VS Code: browse your **bookmarks** or **any directory** from a Quick Pick — even outside the current workspace.
 
 Inspired by the classic [sublime-open](https://github.com/danielfrg/sublime-open) plugin for Sublime Text.
