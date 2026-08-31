@@ -45,8 +45,8 @@ Example:
 
 ## Release Notes
 
-Release notes are available in the CHANGELOG file.
+Release notes are available in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-Released under the MIT license.
+Released under the [MIT license](LICENSE).

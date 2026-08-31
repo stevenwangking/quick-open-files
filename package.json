@@ -107,5 +107,13 @@
     "esbuild": "^0.24.0",
     "typescript": "^5.6.0",
     "vitest": "^2.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stevenwangking/quick-open-files.git"
+  },
+  "homepage": "https://github.com/stevenwangking/quick-open-files#readme",
+  "bugs": {
+    "url": "https://github.com/stevenwangking/quick-open-files/issues"
   }
 }
