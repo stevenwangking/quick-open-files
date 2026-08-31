@@ -11,4 +11,12 @@ suite('Quick Open Files extension', () => {
     const commands = await vscode.commands.getCommands(true);
     assert.ok(commands.includes('quickOpenFiles.browse'), 'browse command should be registered');
   });
+
+  test('browse command runs and opens the QuickPick without errors', async () => {
+    // Exercises the full path: getSettings -> bookmarkEntries -> createQuickPick().show()
+    await vscode.commands.executeCommand('quickOpenFiles.browse');
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    // The picker is a UI singleton; close it so the test instance is left clean.
+    await vscode.commands.executeCommand('workbench.action.closeQuickOpen');
+  });
 });
