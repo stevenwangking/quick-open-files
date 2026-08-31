@@ -9,3 +9,6 @@ tsconfig.json
 docs/**
 **/*.test.ts
 **/.gitignore
+vitest.config.ts
+.vscode-test.mjs
+scripts/**

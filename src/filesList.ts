@@ -44,9 +44,22 @@ export async function bookmarkEntries(bookmarks: readonly string[]): Promise<Fil
   return Promise.all(bookmarks.map(bookmarkEntry));
 }
 
+/**
+ * Match a pattern against a bare entry name. `files.exclude`-style patterns
+ * (a leading double-star prefix or a trailing "/**" suffix) are stripped to
+ * their literal segment so they keep working when only the name is available.
+ */
+function matchesPattern(name: string, pattern: string): boolean {
+  if (minimatch(name, pattern)) {
+    return true;
+  }
+  const stripped = pattern.replace(/^\*\*\//, '').replace(/\/\*\*$/, '');
+  return stripped !== pattern && minimatch(name, stripped);
+}
+
 function isExcluded(name: string, isDir: boolean, exclude: ExcludePatterns): boolean {
   const patterns = isDir ? exclude.folderExcludePatterns : exclude.fileExcludePatterns;
-  return patterns.some((p) => minimatch(name, p));
+  return patterns.some((p) => matchesPattern(name, p));
 }
 
 async function isDirectory(path: string, isSymlink: boolean): Promise<boolean> {
@@ -101,7 +114,10 @@ export async function dirEntries(
   return entries;
 }
 
-/** The directory to show for the active editor, or undefined when no file is open. */
-export function currentDirOf(activeFile: string | undefined): string | undefined {
-  return activeFile ? dirname(activeFile) : undefined;
+/**
+ * The directory to show for the active editor, or undefined when no file-backed
+ * document is open (untitled, output, and other non-file schemes have no real path).
+ */
+export function currentDirOf(activeDoc: { scheme: string; fsPath: string } | undefined): string | undefined {
+  return activeDoc?.scheme === 'file' ? dirname(activeDoc.fsPath) : undefined;
 }

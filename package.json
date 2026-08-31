@@ -74,7 +74,7 @@
             "type": "string"
           },
           "scope": "window",
-          "markdownDescription": "Glob patterns to hide from directory listings. Falls back to your `files.exclude` settings when unset."
+          "markdownDescription": "Glob patterns matched against entry names; `files.exclude`-style patterns such as `**/node_modules/**` also work. Falls back to your `files.exclude` settings when unset."
         }
       }
     }

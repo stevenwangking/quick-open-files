@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 
 suite('Quick Open Files extension', () => {
   test('activates and registers the browse command', async () => {
-    const ext = vscode.extensions.getExtension('steven-plugins.quick-open-files');
+    const ext = vscode.extensions.getExtension('stevenwangking.quick-open-files');
     assert.ok(ext, 'extension should be present');
     await ext.activate();
     assert.ok(ext.isActive, 'extension should be active');

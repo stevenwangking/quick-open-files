@@ -18,7 +18,7 @@ Inspired by the classic [sublime-open](https://github.com/danielfrg/sublime-open
 
 Default keyboard shortcut: `Cmd+Alt+O` (macOS) / `Ctrl+Alt+O` (Windows, Linux). Also available as **Quick Open Files: Browse Files…** in the Command Palette.
 
-- Pick a **file** to open it in a new tab.
+- Pick a **file** to open it in a preview tab (kept as-is once you edit or pin it).
 - Pick a **folder** to browse inside it.
 
 ## Extension Settings
@@ -29,7 +29,7 @@ Default keyboard shortcut: `Cmd+Alt+O` (macOS) / `Ctrl+Alt+O` (Windows, Linux). 
 | `quickOpenFiles.persistentBrowsing` | `true` | Keep the picker open after opening a file. |
 | `quickOpenFiles.listCurrentDir` | `true` | List the active editor's folder below the bookmarks. |
 | `quickOpenFiles.listDirsFirst` | `true` | List folders before files. |
-| `quickOpenFiles.excludePatterns` | *(falls back to `files.exclude`)* | Glob patterns to hide from directory listings. |
+| `quickOpenFiles.excludePatterns` | *(falls back to `files.exclude`)* | Glob patterns matched against entry names; `files.exclude`-style patterns such as `**/node_modules/**` also work. |
 
 Example:
 

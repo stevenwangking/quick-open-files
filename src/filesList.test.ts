@@ -35,11 +35,15 @@ describe('expandHome', () => {
 });
 
 describe('currentDirOf', () => {
-  it('returns the parent folder of the active file', () => {
-    expect(currentDirOf('/tmp/x/y.txt')).toBe('/tmp/x');
+  it("returns the active file document's folder", () => {
+    expect(currentDirOf({ scheme: 'file', fsPath: '/tmp/x/y.txt' })).toBe('/tmp/x');
   });
   it('returns undefined when no file is open', () => {
     expect(currentDirOf(undefined)).toBeUndefined();
+  });
+  it('returns undefined for non-file documents', () => {
+    expect(currentDirOf({ scheme: 'untitled', fsPath: 'Untitled-1' })).toBeUndefined();
+    expect(currentDirOf({ scheme: 'output', fsPath: '/output' })).toBeUndefined();
   });
 });
 
@@ -88,6 +92,16 @@ describe('dirEntries', () => {
     expect(labels).not.toContain('b-dir/');
     expect(labels).not.toContain('skip.pyc');
     expect(labels).not.toContain('.git');
+    expect(labels).toContain('a-dir/');
+    expect(labels).toContain('a.txt');
+  });
+
+  it('applies files.exclude-style patterns with ** segments', async () => {
+    await mkdir(join(fixture, 'node_modules'));
+    const exclude = { folderExcludePatterns: ['**/node_modules/**'], fileExcludePatterns: ['**/*.pyc'] };
+    const labels = (await dirEntries(fixture, exclude, false)).map((e) => e.label);
+    expect(labels).not.toContain('node_modules/');
+    expect(labels).not.toContain('skip.pyc');
     expect(labels).toContain('a-dir/');
     expect(labels).toContain('a.txt');
   });
