@@ -14,7 +14,7 @@ export function getSettings(): Settings {
   const excludePatterns = cfg.get<string[] | undefined>('excludePatterns');
   return {
     bookmarks: cfg.get<string[]>('bookmarks', ['~']),
-    persistentBrowsing: cfg.get('persistentBrowsing', true),
+    persistentBrowsing: cfg.get('persistentBrowsing', false),
     listCurrentDir: cfg.get('listCurrentDir', true),
     listDirsFirst: cfg.get('listDirsFirst', true),
     excludePatterns: excludePatterns ?? fallbackExcludePatterns(),

@@ -10,7 +10,7 @@ Inspired by the classic [sublime-open](https://github.com/danielfrg/sublime-open
 
 - **Bookmarks**: jump straight to frequently used files and folders, across all workspaces.
 - **File system browsing**: drill into any directory with `Enter`, go up with `../` or the `←` back button.
-- **Persistent browsing**: the picker stays open after you open a file, so you can keep opening more.
+- **Persistent browsing (opt-in)**: set `quickOpenFiles.persistentBrowsing` to keep the picker open after opening a file, so you can keep opening more.
 - **Current directory listing**: the active editor's folder is listed right below your bookmarks.
 - **Smart ordering and filtering**: folders before files, and your existing `files.exclude` patterns are respected out of the box.
 
@@ -26,7 +26,7 @@ Default keyboard shortcut: `Cmd+Alt+O` (macOS) / `Ctrl+Alt+O` (Windows, Linux). 
 | Setting | Default | Description |
 |---|---|---|
 | `quickOpenFiles.bookmarks` | `["~"]` | Files or folders shown at the top of the picker. `~` expands to your home directory. |
-| `quickOpenFiles.persistentBrowsing` | `true` | Keep the picker open after opening a file. |
+| `quickOpenFiles.persistentBrowsing` | `false` | Keep the picker open after opening a file. |
 | `quickOpenFiles.listCurrentDir` | `true` | List the active editor's folder below the bookmarks. |
 | `quickOpenFiles.listDirsFirst` | `true` | List folders before files. |
 | `quickOpenFiles.excludePatterns` | *(falls back to `files.exclude`)* | Glob patterns matched against entry names; `files.exclude`-style patterns such as `**/node_modules/**` also work. |

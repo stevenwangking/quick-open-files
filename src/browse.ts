@@ -25,7 +25,6 @@ export class BrowseSession {
   private currentDir: string | undefined;
 
   constructor(private readonly settings: Settings) {
-    this.qp.matchOnDetail = true;
     this.qp.ignoreFocusOut = true;
     this.qp.onDidAccept(this.onAccept, this);
     this.qp.onDidTriggerButton(this.onTriggerButton, this);
@@ -143,7 +142,6 @@ export class BrowseSession {
 function toItem(entry: FileEntry): BrowseItem {
   return {
     label: entry.exists ? entry.label : `${entry.label} (not found)`,
-    detail: entry.path,
     entry,
   };
 }
