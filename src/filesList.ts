@@ -2,7 +2,7 @@
 import { homedir } from 'node:os';
 import { readdir, stat } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
-import { minimatch } from 'minimatch';
+import { Minimatch } from 'minimatch';
 
 export interface FileEntry {
   /** Label shown in the Quick Pick. Folders carry a trailing "/" like the original plugin. */
@@ -44,22 +44,25 @@ export async function bookmarkEntries(bookmarks: readonly string[]): Promise<Fil
   return Promise.all(bookmarks.map(bookmarkEntry));
 }
 
+/** A glob compiled to test bare entry names. */
+type NameMatcher = (name: string) => boolean;
+
 /**
- * Match a pattern against a bare entry name. `files.exclude`-style patterns
- * (a leading double-star prefix or a trailing "/**" suffix) are stripped to
- * their literal segment so they keep working when only the name is available.
+ * Compile a glob once so a listing doesn't re-parse it for every entry.
+ * `files.exclude`-style patterns ending in "/**" also match the folder entry
+ * itself, so hidden folders stay out of listings. A leading double-star
+ * prefix needs no special case: minimatch matches it against a bare name.
  */
-function matchesPattern(name: string, pattern: string): boolean {
-  if (minimatch(name, pattern)) {
-    return true;
-  }
-  const stripped = pattern.replace(/^\*\*\//, '').replace(/\/\*\*$/, '');
-  return stripped !== pattern && minimatch(name, stripped);
+function compileNamePattern(pattern: string): NameMatcher {
+  const direct = new Minimatch(pattern);
+  const stripped = pattern.replace(/\/\*\*$/, '');
+  const folder = stripped === pattern ? undefined : new Minimatch(stripped);
+  return (name) => direct.match(name) || (folder?.match(name) ?? false);
 }
 
-function isExcluded(name: string, isDir: boolean, exclude: ExcludePatterns): boolean {
-  const patterns = isDir ? exclude.folderExcludePatterns : exclude.fileExcludePatterns;
-  return patterns.some((p) => matchesPattern(name, p));
+function isExcluded(name: string, isDir: boolean, matchers: { folders: NameMatcher[]; files: NameMatcher[] }): boolean {
+  const list = isDir ? matchers.folders : matchers.files;
+  return list.some((matches) => matches(name));
 }
 
 async function isDirectory(path: string, isSymlink: boolean): Promise<boolean> {
@@ -84,12 +87,17 @@ export async function dirEntries(
   listDirsFirst: boolean
 ): Promise<FileEntry[]> {
   const dirents = await readdir(dir, { withFileTypes: true });
+  // Compile each glob once per listing instead of once per entry.
+  const matchers = {
+    folders: exclude.folderExcludePatterns.map(compileNamePattern),
+    files: exclude.fileExcludePatterns.map(compileNamePattern),
+  };
 
   const entries: FileEntry[] = [];
   for (const dirent of dirents) {
     const isSymlink = dirent.isSymbolicLink();
     const isDir = dirent.isDirectory() || (isSymlink && (await isDirectory(join(dir, dirent.name), true)));
-    if (isExcluded(dirent.name, isDir, exclude)) {
+    if (isExcluded(dirent.name, isDir, matchers)) {
       continue;
     }
     entries.push({
