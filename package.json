@@ -3,7 +3,7 @@
   "displayName": "Quick Open Files",
   "description": "Open files quicker and easier: browse your bookmarks or any directory from a Quick Pick, even outside the workspace.",
   "version": "0.1.0",
-  "publisher": "steven-plugins",
+  "publisher": "stevenwangking",
   "license": "SEE LICENSE IN LICENSE",
   "icon": "media/icon.png",
   "engines": {
